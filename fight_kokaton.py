@@ -186,6 +186,7 @@ def main():
     bombs = [Bomb((255, 0, 0), 10) for _ in range(NUM_OF_BOMBS)]
     clock = pg.time.Clock()
     tmr = 0
+    beamMulti = []
     num = Score()
     explosions = []
     while True:
@@ -194,7 +195,8 @@ def main():
                 return
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 # スペースキー押下でBeamクラスのインスタンス生成
-                beam = Beam(bird)
+                #beam = Beam(bird)
+                beamMulti.append(Beam(bird))  
         screen.blit(bg_img, [0, 0])
         
         for bomb in bombs:
@@ -209,25 +211,31 @@ def main():
                 return
 
         for i in range(len(bombs)):
-            if beam is not None:
-                if bombs[i].rct.colliderect(beam.rct):
-                    num.score += 1
-                    explosions.append(explosion(bombs[i]))
-                    bombs[i] = None
-                    beam = None
-                    bird.change_img(6, screen)
+             for j in range(len(beamMulti)):
+                if beamMulti[j] is not None:
+                    if bombs[i] is not None:
+                        if beamMulti[j].rct.colliderect(bombs[i].rct):
+                            num.score += 1
+                            explosions.append(explosion(bombs[i]))
+                            bombs[i] = None
+                            beamMulti[j] = None
+                            bird.change_img(6,screen)
+                    
+                    
                     
                     
 
         bombs = [bomb for bomb in bombs if bomb is not None]
         explosions =[exp for exp in explosions if exp.life >= 0]
+        beamMulti = [beam for beam in beamMulti if beam is not None]
 
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
         
 
-        if beam is not None:
-            beam.update(screen)
+        for beam in beamMulti:
+            if beam is not None:
+                beam.update(screen)  
 
         for bomb in bombs:
             bomb.update(screen)
