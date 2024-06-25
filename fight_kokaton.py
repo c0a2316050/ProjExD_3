@@ -87,6 +87,7 @@ class Bird:
         if not sum_mv == [0, 0]:
             self.dire = tuple(sum_mv)
 
+
 class Beam:
     """
     こうかとんが放つビームに関するクラス
@@ -145,6 +146,7 @@ class Bomb:
         self.rct.move_ip(self.vx, self.vy)
         screen.blit(self.img, self.rct)
 
+
 class Score:#
     def __init__(self):
         """
@@ -163,6 +165,7 @@ class Score:#
         self.img = self.fonto.render(f"スコア:{self.score}", 0, self.color)
         screen.blit(self.img,[100, HEIGHT-50])
 
+
 class explosion():
     def __init__(self,bomb:Bomb):
         self.effect = pg.image.load("fig/explosion.gif")
@@ -180,6 +183,7 @@ class explosion():
             else:
                 self.upgazou = self.lst[1]
         screen.blit(self.upgazou,self.rct)
+
             
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
